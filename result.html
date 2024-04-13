@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Calculation Result</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Tax Calculation Result</h1>
+    <div class="card">
+      <div class="card-body">
+        <p id="taxResult">Calculating...</p>
+        <button class="btn btn-primary" onclick="window.close()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve form data from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const income = parseFloat(urlParams.get('income'));
+    const extraIncome = parseFloat(urlParams.get('extraIncome'));
+    const deductions = parseFloat(urlParams.get('deductions'));
+    const age = urlParams.get('age');
+
+    // Log the retrieved values to the console
+console.log('Income:', income);
+console.log('Extra Income:', extraIncome);
+console.log('Deductions:', deductions);
+console.log('Age:', age);
+
+    // Perform tax calculation
+    let taxableIncome = income + extraIncome - deductions;
+    let tax = 0;
+
+    if (taxableIncome > 800000) {
+  if (age === 'under40') {
+    tax = 0.3 * (taxableIncome - 800000);
+  } else if (age === '40to60') {
+    tax = 0.4 * (taxableIncome - 800000);
+  } else {
+    tax = 0.1 * (taxableIncome - 800000);
+  }
+}
+
+
+    // Display tax result
+    document.getElementById('taxResult').innerHTML = 'Your overall income will be: <strong>'
+         + (income - deductions - tax).toFixed(2) + '</strong>';
+        //  <h3>after tax deductions</h3>
+  </script>
+</body>
+</html>
