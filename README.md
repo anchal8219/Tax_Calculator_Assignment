@@ -1,6 +1,8 @@
 # Tax Calculator
 This tax calculation model has a simple structure: Individuals under 40 pay no tax if their income after deductions stays below 8 Lakhs. For those over 40 but under 60, any income exceeding 8 Lakhs is taxed at 40%, and for those 60 or older, the tax rate is 10%. For example, a 34-year-old earning 40 Lakhs with no deductions would owe 30% of the income exceeding 8 Lakhs, totaling 9.6 Lakhs in taxes.
 
+# Deployed link: https://tax-calculator-assignment.vercel.app/ 
+
 # Prerequisites
 1. Html
 2. CSS
