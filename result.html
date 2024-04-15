@@ -12,7 +12,7 @@
     <div class="card">
       <div class="card-body">
         <p id="taxResult">Calculating...</p>
-        <button class="btn btn-primary" onclick="window.close()">Close</button>
+        <button class="btn btn-primary" onclick="window.location.href = 'index.html'">Close</button>
       </div>
     </div>
   </div>
@@ -47,9 +47,8 @@ console.log('Age:', age);
 
 
     // Display tax result
-    document.getElementById('taxResult').innerHTML = 'Your overall income will be: <strong>'
+    document.getElementById('taxResult').innerHTML = 'Your overall income after tax deductions will be: <strong>'
          + (income - deductions - tax).toFixed(2) + '</strong>';
-        //  <h3>after tax deductions</h3>
   </script>
 </body>
 </html>

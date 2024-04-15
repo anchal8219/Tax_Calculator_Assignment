@@ -5,7 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tax Calculator</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    .form-group {
+      position: relative;
+    }
+    .error-icon {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      display: none;
+      cursor: pointer; /* Add cursor pointer for tooltip effect */
+    }
+    .error-icon:hover::after { /* Show tooltip on hover */
+      content: attr(title);
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 5px;
+      border-radius: 3px;
+      top: calc(100% + 5px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
 
@@ -14,22 +38,23 @@
     <form id="taxForm" action="result.html" method="GET">
       <div class="form-group">
         <label for="income">Gross Annual Income:</label>
-        <input type="number" class="form-control" id="income" placeholder="Enter income">
-        <span class="error-icon" id="incomeError" title="Income is required">*</span>
+        <input type="text" class="form-control" id="income" name="income" placeholder="Enter income">
+        <span class="error-icon" id="incomeError" title="Income must be a valid number">ⓘ</span>
       </div>
       <div class="form-group">
         <label for="extraIncome">Extra Income:</label>
-        <input type="number" class="form-control" id="extraIncome" placeholder="Enter extra income">
-        <span class="error-icon" id="extraIncomeError" title="Extra income is required">*</span>
+        <input type="text" class="form-control" id="extraIncome" name="extraIncome" placeholder="Enter extra income">
+        <span class="error-icon" id="extraIncomeError" title="Extra income must be a valid number">ⓘ</span>
       </div>
       <div class="form-group">
         <label for="deductions">Deductions:</label>
-        <input type="number" class="form-control" id="deductions" placeholder="Enter deductions">
-        <span class="error-icon" id="deductionsError" title="Deductions are required">*</span>
+        <input type="text" class="form-control" id="deductions" name="deductions" placeholder="Enter deductions">
+        <span class="error-icon" id="deductionsError" title="Deductions must be a valid number">ⓘ</span>
       </div>
       <div class="form-group">
         <label for="age">Age:</label>
         <select class="form-control" id="age" name="age">
+          <option value="">Select Age</option>
           <option value="under40">&lt;40</option>
           <option value="40to60">&ge;40 &lt;60</option>
           <option value="over60">&ge;60</option>
@@ -41,11 +66,65 @@
     </form>
   </div>
 
-
-
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Function to show error icon and tooltip
+      function showErrorIcon(element) {
+        var errorIcon = element.siblings('.error-icon');
+        errorIcon.show();
+      }
 
+      // Function to hide error icon and tooltip
+      function hideErrorIcon(element) {
+        var errorIcon = element.siblings('.error-icon');
+        errorIcon.hide();
+      }
+
+      // Add event listeners to input fields
+      $('#income, #extraIncome, #deductions').on('input', function() {
+        var value = $(this).val();
+        var isValid = !isNaN(value) && value !== '';
+
+        if (!isValid) {
+          showErrorIcon($(this));
+        } else {
+          hideErrorIcon($(this));
+        }
+      });
+
+      // Form submission
+      $('#taxForm').submit(function(e) {
+        e.preventDefault();
+
+        var income = parseFloat($('#income').val());
+        var extraIncome = parseFloat($('#extraIncome').val());
+        var deductions = parseFloat($('#deductions').val());
+        var age = $('#age').val();
+
+        if (isNaN(income) || income <= 0) {
+          $('#incomeError').show();
+          return;
+        }
+        if (isNaN(extraIncome) || extraIncome < 0) {
+          $('#extraIncomeError').show();
+          return;
+        }
+        if (isNaN(deductions) || deductions < 0) {
+          $('#deductionsError').show();
+          return;
+        }
+        if (!age) {
+          $('#ageError').show();
+          return;
+        }
+
+        // If no errors, submit the form
+        this.submit();
+      });
+    });
+  </script>
 </body>
 </html>
